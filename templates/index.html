@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>课表查看器</title>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>📚 课表查看器</h1>
+            <div class="student-info" id="studentInfo"></div>
+        </header>
+
+        <div class="upload-section">
+            <input type="file" id="pdfInput" accept=".pdf" hidden>
+            <button class="upload-btn" onclick="document.getElementById('pdfInput').click()">
+                📎 选择PDF课表
+            </button>
+            <span id="fileName" class="file-name"></span>
+        </div>
+
+        <div class="week-selector">
+            <button class="week-btn" onclick="changeWeek(-1)">◀</button>
+            <span id="weekDisplay"><span id="currentWeek">1</span> 周</span>
+            <button class="week-btn" onclick="changeWeek(1)">▶</button>
+            <label class="all-weeks-toggle">
+                <input type="checkbox" id="showAllWeeks" onchange="toggleAllWeeks()">
+                显示全部
+            </label>
+        </div>
+
+        <div class="schedule-container" id="scheduleContainer">
+            <div class="schedule-header">
+                <div class="time-column"></div>
+                <div class="day-column">周一</div>
+                <div class="day-column">周二</div>
+                <div class="day-column">周三</div>
+                <div class="day-column">周四</div>
+                <div class="day-column">周五</div>
+                <div class="day-column">周六</div>
+                <div class="day-column">周日</div>
+            </div>
+            <div class="schedule-body" id="scheduleBody">
+            </div>
+        </div>
+
+        <div class="course-detail" id="courseDetail">
+            <div class="detail-header">
+                <h3 id="detailName">课程名称</h3>
+                <button class="close-btn" onclick="closeDetail()">×</button>
+            </div>
+            <div class="detail-content">
+                <p><strong>时间：</strong><span id="detailTime"></span></p>
+                <p><strong>周次：</strong><span id="detailWeeks"></span></p>
+                <p><strong>地点：</strong><span id="detailLocation"></span></p>
+                <p><strong>教师：</strong><span id="detailTeacher"></span></p>
+                <p><strong>学分：</strong><span id="detailCredit"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/service-worker.js');
+        }
+    </script>
+</body>
+</html>
